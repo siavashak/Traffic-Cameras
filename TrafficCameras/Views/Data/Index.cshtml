@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Fetch Data";
+}
+
+<h1>Fetch Data from URL</h1>
+
+<form asp-controller="Data" asp-action="FetchData" method="post">
+    <div class="form-group">
+        <label for="url">Enter URL:</label>
+        <input type="url" class="form-control" id="url" name="url" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Fetch</button>
+</form>
+
+<br />
+
+@*@if (ViewBag.FetchedContent != null)
+{
+    <h2>Fetched Content:</h2>
+    <textarea class="form-control" rows="10" readonly>@ViewBag.FetchedContent</textarea>
+}*@
+
+@if (ViewBag.DropdownData != null)
+{
+<select id="roadwayDropdown" class="form-control">
+    <option value="">-- Select Roadway --</option>
+    @foreach (var item in ViewBag.DropdownData)
+    {
+<option value="@item.Value" data-video-url="@item.Value">@item.Key</option>}
+</select>
+
+    <br />
+    <button onclick="playVideo()">Play</button>
+
+    <video id="videoPlayer" controls></video>
+    <p id="message"></p>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        const video = document.getElementById('videoPlayer');
+        const messageElement = document.getElementById('message');
+        const roadwayDropdown = document.getElementById('roadwayDropdown');
+
+        function playVideo() {
+            const m3u8URL = roadwayDropdown.value;
+
+            if (!m3u8URL) {
+                messageElement.textContent = "Please enter an M3U8 URL.";
+                return;
+            }
+            messageElement.textContent = "";
+
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(m3u8URL);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    video.play();
+                });
+                hls.on(Hls.Events.ERROR, function (event, data) {
+                    console.error("HLS error occurred:", data);
+                    messageElement.textContent = "Error loading or playing the video.";
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = m3u8URL;
+                video.addEventListener('loadedmetadata', function () {
+                    video.play();
+                });
+                video.addEventListener('error', function (error) {
+                    console.error("Video element error:", error);
+                    messageElement.textContent = "Error loading or playing the video.";
+                });
+            } else {
+                messageElement.textContent = "Your browser does not support HLS playback.";
+            }
+        }
+    </script>
+}
