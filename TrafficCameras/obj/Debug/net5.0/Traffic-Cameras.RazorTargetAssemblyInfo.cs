@@ -17,7 +17,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyProductAttribute("Traffic-Cameras")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+48d939a99d91deed18d3f2c9ed6b9edfbdad5698")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Traffic-Cameras.Views")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
